@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/v2/user")
+@RequestMapping("api/v1/user")
 public class UserController {
 
 //    Get Service
