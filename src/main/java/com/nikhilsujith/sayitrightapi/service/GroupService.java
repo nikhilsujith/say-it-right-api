@@ -29,6 +29,6 @@ public class GroupService {
     /*--------------------------------POST--------------------------------*/
 //    Insert new group
     public void createNewGroup(Group group ){
-        repository.insert(group);
+        repository.save(group);
     }
 }

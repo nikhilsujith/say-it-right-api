@@ -1,12 +1,10 @@
 package com.nikhilsujith.sayitrightapi.controller;
 
+import com.nikhilsujith.sayitrightapi.model.Group;
 import com.nikhilsujith.sayitrightapi.model.User;
 import com.nikhilsujith.sayitrightapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +27,12 @@ public class UserController {
     @GetMapping("/{userId}")
     public Optional<User> getUserById(@PathVariable String userId){
         return service.getUserById(userId);
+    }
+
+    /*------------------------POST---------------------------*/
+    @PostMapping
+    public void addNewUser(@RequestBody User user, Group group){
+        service.addNewUser(user, group);
     }
 
 }

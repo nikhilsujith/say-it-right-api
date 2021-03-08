@@ -32,7 +32,7 @@ public class GroupController {
 //      Group get's added, model does not parse to JSON.
 
     @PostMapping()
-    public void createNewGroup(Group group){
+    public void createNewGroup(@RequestBody Group group){
         service.createNewGroup(group);
     }
 }
