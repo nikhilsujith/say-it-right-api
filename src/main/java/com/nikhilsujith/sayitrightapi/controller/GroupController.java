@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/group")
@@ -15,6 +16,12 @@ public class GroupController {
 //    Get Service
     @Autowired
     GroupService service;
+
+//    Get all groups
+    @GetMapping("/all")
+    public List<Group> getAllGroups(){
+        return service.getAllGroups();
+    }
 
     @GetMapping("/name")
     public Optional<List<Group>> getGroupByCreatorName(@RequestParam(name = "creator") String creatorName){

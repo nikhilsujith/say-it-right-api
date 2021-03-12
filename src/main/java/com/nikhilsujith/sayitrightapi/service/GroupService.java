@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class GroupService {
@@ -14,6 +15,11 @@ public class GroupService {
 //    Repository
     @Autowired
     GroupRepository repository;
+
+//    Get all groups
+    public List<Group> getAllGroups() {
+        return repository.findAll();
+    }
 
 //    Get group by creator Name
     public Optional<List<Group>> findGroupByCreatorName(String creatorName){
@@ -29,6 +35,8 @@ public class GroupService {
     /*--------------------------------POST--------------------------------*/
 //    Insert new group
     public void createNewGroup(Group group ){
-        repository.save(group);
+        repository.save(new Group(group.get_id(), group.getGroupName(), group.getGroupDesc(), group.getGroupImage(), group.getCreatorId(), group.getCreatorName()));
     }
+
+
 }
