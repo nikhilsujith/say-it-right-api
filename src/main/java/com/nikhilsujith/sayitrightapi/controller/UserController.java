@@ -5,35 +5,50 @@ import com.nikhilsujith.sayitrightapi.model.User;
 import com.nikhilsujith.sayitrightapi.service.UserService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/user")
+@CrossOrigin("*") //needs to change before going into production
 public class UserController {
 
-//    Get Service
+    //    Get Service
     @Autowired
     UserService service;
 
-//    Get all user data
+    //    Get all user data
     @GetMapping("/all")
-    public List<User> getAllData(){
+    public List<User> getAllData() {
         return service.getAllUserData();
     }
 
-//    Get user by User ID
+    //    Get user by User ID
     @GetMapping("/{userId}")
-    public Optional<User> getUserById(@PathVariable ObjectId userId){
+    public Optional<User> getUserById(@PathVariable ObjectId userId) {
         return service.getUserById(userId);
     }
 
     /*------------------------POST---------------------------*/
+
+    @PostMapping(
+                path = "{id}/image/upload",
+                consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+                produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public void uploadUserProfileImage(@PathVariable("id") String id,
+                                       @RequestParam("file") MultipartFile file ){
+        System.out.println(file.getContentType()+"  "+file.getName());
+        service.uploadImage(id, file);
+    }
     @PostMapping
-    public void addNewUser(@RequestBody User user){
+    public void addNewUser(@RequestBody User user) {
         service.addNewUser(user);
     }
 //    TODO
