@@ -85,6 +85,7 @@ public class UserService {
         String fileName = String.format("%s-%s", file.getName(), UUID.randomUUID());
         try {
             fileStore.saveImage(path, fileName, Optional.of(metadata), file.getInputStream());
+            System.out.println(fileName); //can be used to fetch file from s3
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }

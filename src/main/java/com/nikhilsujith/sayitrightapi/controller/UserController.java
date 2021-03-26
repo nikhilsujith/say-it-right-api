@@ -47,6 +47,8 @@ public class UserController {
         System.out.println(file.getContentType()+"  "+file.getName());
         service.uploadImage(id, file);
     }
+
+
     @PostMapping
     public void addNewUser(@RequestBody User user) {
         service.addNewUser(user);
