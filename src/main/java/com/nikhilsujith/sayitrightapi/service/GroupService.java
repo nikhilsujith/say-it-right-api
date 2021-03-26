@@ -2,6 +2,7 @@ package com.nikhilsujith.sayitrightapi.service;
 
 import com.nikhilsujith.sayitrightapi.model.Group;
 import com.nikhilsujith.sayitrightapi.repository.GroupRepository;
+import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,14 +23,14 @@ public class GroupService {
     }
 
 //    Get group by creator Name
-    public Optional<List<Group>> findGroupByCreatorName(String creatorName){
-        return repository.getGroupByCreatorName(creatorName);
+    public Optional<List<Group>> findGroupByCreatorId(String creatorId){
+        return repository.getGroupByCreatorId(creatorId);
     }
 
 //    Get group by creator Id
-    public Optional<List<Group>> findGroupByCreatorId(String creatorId){
-        return repository.getGroupByCreatorName(creatorId);
-    }
+//    public Optional<List<Group>> findGroupByCreatorId(String creatorId){
+//        return repository.getGroupByCreatorName(creatorId);
+//    }
 
 
     /*--------------------------------POST--------------------------------*/
