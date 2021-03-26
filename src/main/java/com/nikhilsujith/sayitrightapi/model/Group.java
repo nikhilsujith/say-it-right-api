@@ -14,28 +14,28 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-@Document(collection = "groups")
+//@Document(collection = "groups")
+@Document(collection = "sayitright_group")
 @TypeAlias("Group")
 public class Group {
 
     @Id
-    private UUID _id;
+    public String id;
+    public String groupName;
+    public String groupDesc;
+    public String groupImage;
+    public String creatorId; //Object Id of creator
+    public String creatorName; // Name of creator
+    public String numberOfUsers;
 
-    private String groupName;
-    private String groupDesc;
-    private String groupImage;
-    private String creatorId; //Object Id of creator
-    private String creatorName; // Name of creator
-    private String numberOfUsers;
-
-    public Group(UUID _id, String groupName, String groupDesc, String groupImage, String creatorId, String creatorName) {
-        this._id = UUID.randomUUID();
-        this.groupName = groupName;
-        this.groupDesc = groupDesc;
-        this.groupImage = groupImage;
-        this.creatorId = creatorId;
-        this.creatorName = creatorName;
-    }
+//    public Group(UUID _id, String groupName, String groupDesc, String groupImage, String creatorId, String creatorName) {
+//        this._id = UUID.randomUUID();
+//        this.groupName = groupName;
+//        this.groupDesc = groupDesc;
+//        this.groupImage = groupImage;
+//        this.creatorId = creatorId;
+//        this.creatorName = creatorName;
+//    }
 }
 
 //TODO

@@ -2,6 +2,8 @@ package com.nikhilsujith.sayitrightapi.controller;
 
 import com.nikhilsujith.sayitrightapi.model.Group;
 import com.nikhilsujith.sayitrightapi.service.GroupService;
+import com.nikhilsujith.sayitrightapi.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +18,10 @@ public class GroupController {
 //    Get Service
     @Autowired
     GroupService service;
+    
+//  Get Service
+  @Autowired
+  UserService user_service;
 
 //    Get all groups
     @GetMapping("/all")
@@ -39,7 +45,9 @@ public class GroupController {
 //      Group get's added, model does not parse to JSON.
 
     @PostMapping()
-    public void createNewGroup(@RequestBody Group group){
-        service.createNewGroup(group);
+    public String createNewGroup(@RequestBody Group group){
+        String obj_id=service.createNewGroup(group);
+        int r=user_service.insertUserCreatedGroup(group);
+        return String.valueOf(r);
     }
 }

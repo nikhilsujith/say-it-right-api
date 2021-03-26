@@ -21,17 +21,18 @@ public class User {
 
 
     @Id
-    private String id;
-    private String poolId;
-    private String fullName;
-    private String profileImage;
-    private String email;
-    private String desc;
-    private String audioFile;
-    private String videoFile;
-//    private List<Group> myGroups;
-//    private List<Group> enrolledGroups;
-    private String createdOn;
+    public String id;
+    public String poolId;
+    public String fullName;
+    public String profileImage;
+    public String email;
+    public String desc;
+    public String audioFile;
+    public String videoFile;
+    public List<UserGroup> myGroups;
+    public List<UserGroup> enrolledGroups;
+    public String createdOn;
+    public String updatedOn;
 
 //    TODO
 //      https://stackoverflow.com/questions/26591307/how-to-save-an-object-with-null-dbref-in-mongodb-java-spring?rq=1

@@ -34,8 +34,9 @@ public class GroupService {
 
     /*--------------------------------POST--------------------------------*/
 //    Insert new group
-    public void createNewGroup(Group group ){
-        repository.save(new Group(group.get_id(), group.getGroupName(), group.getGroupDesc(), group.getGroupImage(), group.getCreatorId(), group.getCreatorName()));
+    public String createNewGroup(Group group ){
+        Group g=repository.save(group);
+        return g.id;
     }
 
 

@@ -5,6 +5,8 @@ import com.nikhilsujith.sayitrightapi.model.User;
 import com.nikhilsujith.sayitrightapi.service.UserService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -33,8 +35,9 @@ public class UserController {
 
     /*------------------------POST---------------------------*/
     @PostMapping
-    public void addNewUser(@RequestBody User user){
+    public ResponseEntity addNewUser(@RequestBody User user){
         service.addNewUser(user);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 //    TODO
 //        Handle E11000 duplicate key error collection from MongoDB
