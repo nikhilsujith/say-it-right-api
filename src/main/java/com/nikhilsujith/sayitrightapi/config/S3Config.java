@@ -16,81 +16,20 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class S3Config {
 
-    @Value("${amazon.s3.endpoint}")
-    private String amazonS3Endpoint;
 
-    @Value("${amazon.s3.bucketName}")
-    private String amazonS3BucketName;
+    @Value("${aws.accessKey}")
+    private String ACCESS_KEY;
 
-    @Value("${amazon.aws.region}")
-    private String amazonAWSRegion;
-
-    @Value("${amazon.aws.profile}")
-    private String amazonAWSProfile;
+    @Value("${aws.secretKey}")
+    private String SECRET_KEY;
 
     public S3Config() {
     }
-
-
-//    OLD -----------------------------------------------------------
-//    @Bean
-//    public AmazonDynamoDB amazonDynamoDB() {
-//        AmazonDynamoDBClientBuilder builder = configDBClientBuilder();
-//        return builder.build();
-//    }
-
-//    @Bean
-//    AmazonDynamoDBClientBuilder configDBClientBuilder() {
-//
-//        AmazonDynamoDBClientBuilder builder = AmazonDynamoDBClientBuilder.standard();
-//        builder.setEndpointConfiguration(amazonEndpointConfiguration());
-//        builder.withCredentials(amazonAWSCredentials());
-//        return builder;
-//    }
-
-    //    @Bean
-//    public AmazonDynamoDB amazonDynamoDBConfig(){
-//        return AmazonDynamoDBClientBuilder.standard()
-//                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(amazonS3Endpoint, amazonAWSRegion))
-//                .withCredentials(amazonAWSCredentials()).build();
-//    }
-
-//    OLD -----------------------------------------------------------
-
-
-
-//    NEW -----------------------------------------------------------
-
-//    @Bean
-//    public AmazonS3 amazonS3() {
-//        AmazonS3ClientBuilder builder = configS3ClientBuilder();
-//        return builder.build();
-//    }
-//
-//    @Bean
-//    AmazonS3ClientBuilder configS3ClientBuilder() {
-//        AmazonS3ClientBuilder builder = AmazonS3ClientBuilder.standard();
-//        builder.setEndpointConfiguration(amazonEndpointConfiguration());
-//        builder.withCredentials(amazonAWSCredentials());
-//        return builder;
-//    }
-//
-//    private AwsClientBuilder.EndpointConfiguration amazonEndpointConfiguration() {
-//        return new AwsClientBuilder.EndpointConfiguration(amazonS3Endpoint, amazonAWSRegion);
-//    }
-//
-//    private AWSCredentialsProvider amazonAWSCredentials() {
-//        return new ProfileCredentialsProvider(amazonAWSProfile);
-//    }
-
-//    NEW -----------------------------------------------------------
-
     @Bean
     public AmazonS3 s3(){
         AWSCredentials awsCredentials = new BasicAWSCredentials(
-                "ACCESS KEY HERE",
-                "SECRET KEY HERE"
-
+                ACCESS_KEY,
+                SECRET_KEY
         );
 //        Following the builder pattern
         return AmazonS3ClientBuilder

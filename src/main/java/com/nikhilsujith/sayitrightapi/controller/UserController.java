@@ -13,6 +13,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/user")
@@ -35,18 +36,7 @@ public class UserController {
         return service.getUserById(userId);
     }
 
-    /*------------------------POST---------------------------*/
 
-    @PostMapping(
-                path = "{id}/image/upload",
-                consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
-                produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public void uploadUserProfileImage(@PathVariable("id") String id,
-                                       @RequestParam("file") MultipartFile file ){
-        System.out.println(file.getContentType()+"  "+file.getName());
-        service.uploadImage(id, file);
-    }
     @PostMapping
     public void addNewUser(@RequestBody User user) {
         service.addNewUser(user);
@@ -55,4 +45,21 @@ public class UserController {
 //        Handle E11000 duplicate key error collection from MongoDB
 //          Error cause by Unique index on groupName in sayitrightdb > groups
 
+    /*------------------------Image---------------------------*/
+
+    @PostMapping(
+            path = "{id}/image/upload",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public String uploadUserProfileImage(@PathVariable("id") String id,
+                                         @RequestParam("file") MultipartFile file
+    ) {
+        return service.uploadImage(id, file);
+    }
+
+//    @GetMapping("{id}/image/download")
+//    public byte[] downloadUserProfileImage(@PathVariable("id") String id){
+//        return service.downloadUserProfileImage(id);
+//    }
 }

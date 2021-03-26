@@ -27,32 +27,32 @@ import static org.apache.http.entity.ContentType.*;
 @Service
 public class UserService {
 
-//    Get Repository
+    //    Get Repository
     @Autowired
     UserRepository userRepository;
-//    Get S3 File Store
+    //    Get S3 File Store
     @Autowired
     FileStore fileStore;
 
-//  User
+    //  User
     User user;
 
     @Autowired
     GroupRepository groupRepository;
 
-//    Get all user data
-    public List<User> getAllUserData(){
+    //    Get all user data
+    public List<User> getAllUserData() {
         return userRepository.findAll();
     }
 
-//    Get user by UserId
-    public Optional<User> getUserById(ObjectId userId){
+    //    Get user by UserId
+    public Optional<User> getUserById(ObjectId userId) {
         return userRepository.findById(userId);
     }
 
     /*--------------------------POST--------------------------------------------*/
-    public void addNewUser(User user){
-       userRepository.save(user);
+    public void addNewUser(User user) {
+        userRepository.save(user);
 
 
 //        repository.save(group);
@@ -63,32 +63,33 @@ public class UserService {
 //              https://stackoverflow.com/questions/43757776/save-document-with-dbref-in-mongodb-spring-data
     }
 
-    public void uploadImage(String id, MultipartFile file) {
-//        check if image is not empty
-//        if file is image
-//        if user exists in database
-//        grab metadata
-//        store image in s3 and update database with link
+
+    /*------------------------Image---------------------------*/
+
+
+    public String uploadImage(String id, MultipartFile file) {
+
         isFileEmpty(file);
 
         isImage(file);
-
 //        TODO
-//          Check is user exists in database
+//          Check if user exists in database
 
         Map<String, String> metadata = extractMetada(file);
 
 //        Store image
-        String userId = "602e183e8bb978df6a913a1d";
+//        String userId = "602e183e8bb978df6a913a1d";
 
-        String path = String.format("%s/%s", BucketName.PROFILE_IMAGE.getBucketName(), userId);
+        String path = String.format("%s/%s", BucketName.PROFILE_IMAGE.getBucketName(), id);
         String fileName = String.format("%s-%s", file.getName(), UUID.randomUUID());
+
+        String url = "https://say-it-right-bucket.s3.amazonaws.com" + "/" + path + "/" + fileName;
         try {
             fileStore.saveImage(path, fileName, Optional.of(metadata), file.getInputStream());
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
-
+        return url;
     }
 
     @NotNull
@@ -100,14 +101,18 @@ public class UserService {
     }
 
     private void isImage(MultipartFile file) {
-        if (!Arrays.asList(IMAGE_JPEG.getMimeType(), IMAGE_PNG.getMimeType(), IMAGE_GIF.getMimeType()).contains(file.getContentType())){
+        if (!Arrays.asList(IMAGE_JPEG.getMimeType(), IMAGE_PNG.getMimeType(), IMAGE_GIF.getMimeType()).contains(file.getContentType())) {
             throw new IllegalStateException("File must be of type jpeg, png or gif");
         }
     }
 
     private void isFileEmpty(MultipartFile file) {
-        if(file.isEmpty()){
+        if (file.isEmpty()) {
             throw new IllegalStateException("Cannot upload empty file [" + file.getSize() + "]");
         }
     }
+
+//    public byte[] downloadUserProfileImage(String id) {
+////        User user = getUserOrThrow
+//    }
 }
