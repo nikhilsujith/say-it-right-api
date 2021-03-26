@@ -62,4 +62,10 @@ public class UserController {
 //    public byte[] downloadUserProfileImage(@PathVariable("id") String id){
 //        return service.downloadUserProfileImage(id);
 //    }
+
+
+    /*------------------------Test Area---------------------------*/
+
+
+
 }

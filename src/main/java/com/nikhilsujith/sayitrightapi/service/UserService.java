@@ -69,27 +69,39 @@ public class UserService {
 
     public String uploadImage(String id, MultipartFile file) {
 
+        String response;
+
         isFileEmpty(file);
 
         isImage(file);
+
 //        TODO
 //          Check if user exists in database
 
-        Map<String, String> metadata = extractMetada(file);
+        response = uploadToS3(id, file);
 
-//        Store image
-//        String userId = "602e183e8bb978df6a913a1d";
+
+
+        return response;
+    }
+
+    @NotNull
+    private String uploadToS3(String id, MultipartFile file) {
+        String response;
+        Map<String, String> metadata = extractMetada(file);
 
         String path = String.format("%s/%s", BucketName.PROFILE_IMAGE.getBucketName(), id);
         String fileName = String.format("%s-%s", file.getName(), UUID.randomUUID());
-
         String url = "https://say-it-right-bucket.s3.amazonaws.com" + "/" + path + "/" + fileName;
+
         try {
             fileStore.saveImage(path, fileName, Optional.of(metadata), file.getInputStream());
+            response = url;
         } catch (IOException e) {
+            response = "Image upload failed";
             throw new IllegalStateException(e);
         }
-        return url;
+        return response;
     }
 
     @NotNull
