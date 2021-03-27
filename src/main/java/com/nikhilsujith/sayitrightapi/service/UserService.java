@@ -34,6 +34,10 @@ public class UserService {
     @Autowired
     FileStore fileStore;
 
+//        Get repository
+    @Autowired
+    GroupRepository repo;
+
     //  User
     User user;
 
@@ -63,26 +67,34 @@ public class UserService {
 //              https://stackoverflow.com/questions/43757776/save-document-with-dbref-in-mongodb-spring-data
     }
 
+//    update database with image link
+    public String updateDatabaseImageLink(String link){
+
+        return "updated";
+    }
+
 
     /*------------------------Image---------------------------*/
 
 
     public String uploadImage(String id, MultipartFile file) {
-
         String response;
-
         isFileEmpty(file);
-
         isImage(file);
-
-//        TODO
-//          Check if user exists in database
-
         response = uploadToS3(id, file);
-
-
-
+        updateImageLink(id, response);
         return response;
+    }
+
+    private void updateImageLink(String id, String response) {
+        //        Update Database
+        ObjectId oId = new ObjectId(id);
+        Optional<User> user = userRepository.findById(oId);
+//        TODO
+//          Handle null case
+        User updatedUser = user.get();
+        updatedUser.setProfileImage(response);
+        userRepository.save(updatedUser);
     }
 
     @NotNull

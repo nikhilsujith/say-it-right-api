@@ -31,8 +31,8 @@ public class User {
     private String desc;
     private String audioFile;
     private String videoFile;
-//    private List<Group> myGroups;
-//    private List<Group> enrolledGroups;
+    public List<UserGroup> myGroups;
+    public List<UserGroup> enrolledGroups;
     private String createdOn;
 
 //    TODO
