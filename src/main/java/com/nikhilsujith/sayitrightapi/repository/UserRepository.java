@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface UserRepository extends MongoRepository<User, ObjectId> {
 
     //    Get group by creator name
-    @Query(value="{'poolId:?0}")
-    User getUserIdByPoolId(String poolId);
+    @Query(value="{'poolId':?0}")
+    Optional<User> getGroupByCreatorId(String poolId);
 
 }

@@ -56,10 +56,10 @@ public class UserController {
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public String uploadUserProfileImage(@PathVariable("id") String id,
+    public String uploadUserProfileImage(@PathVariable("id") String poolId,
                                          @RequestParam("file") MultipartFile file
     ) {
-        return service.uploadImage(id, file);
+        return service.uploadImage(poolId, file);
     }
 
 }
