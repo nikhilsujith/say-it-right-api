@@ -17,4 +17,5 @@ public interface UserRepository extends MongoRepository<User, ObjectId> {
     @Query(value="{'poolId':?0}")
     Optional<User> getGroupByCreatorId(String poolId);
 
+    //public User findByPoolId(String poolId);
 }

@@ -12,7 +12,8 @@ import org.springframework.data.annotation.TypeAlias;
 @Setter
 @TypeAlias("UserGroup")
 public class UserGroup {
-    public String id;
+	public String id;
     public String groupName;
+    public String groupDesc;
     public String groupImage;
 }

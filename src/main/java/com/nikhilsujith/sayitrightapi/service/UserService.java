@@ -4,6 +4,7 @@ import com.nikhilsujith.sayitrightapi.bucket.BucketName;
 import com.nikhilsujith.sayitrightapi.fileStore.FileStore;
 import com.nikhilsujith.sayitrightapi.model.Group;
 import com.nikhilsujith.sayitrightapi.model.User;
+import com.nikhilsujith.sayitrightapi.model.UserGroup;
 import com.nikhilsujith.sayitrightapi.repository.GroupRepository;
 import com.nikhilsujith.sayitrightapi.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -57,6 +58,23 @@ public class UserService {
 //    update database with image link
     public String updateDatabaseImageLink(String link){
         return "updated";
+    }
+    
+    public int insertUserCreatedGroup(Group g) {
+    	Optional<User> u=userRepository.findById(new ObjectId(g.creatorId));
+    	User uu=u.get();
+    	int count=0;
+    	UserGroup new_ug=new UserGroup();
+    	new_ug.id=g.id;
+    	new_ug.groupName=g.groupName;
+    	new_ug.groupImage=g.groupImage;
+    	new_ug.groupDesc=g.groupDesc;
+    	uu.myGroups.add(new_ug);
+    	userRepository.save(uu);
+    	for(UserGroup x:uu.myGroups) {
+    		count++;
+    	}
+    	return count;
     }
 
 

@@ -6,7 +6,9 @@ import com.nikhilsujith.sayitrightapi.repository.UserRepository;
 import com.nikhilsujith.sayitrightapi.service.UserService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,12 +41,34 @@ public class UserController {
     public Optional<User> getUserById(@PathVariable ObjectId userId) {
         return service.getUserById(userId);
     }
+    
+    //----------------Deep's getUserByPoolId------------------------
+    
+////  Get user by Pool ID
+//	  @GetMapping("getUserByPoolId/{pool_id}")
+//	  public User getUserById(@PathVariable String pool_id) {
+//	      return service.getUserByPoolId(pool_id);
+//	  }
+//	  
+//	//  Get userid by Pool ID
+//	  @GetMapping("getUserIdByPoolId/{pool_id}")
+//	  public String getUserIdById(@PathVariable String pool_id) {
+//	      return service.getUserIdByPoolId(pool_id);
+//	  }
 
-
+    //----------------------------------------------------------------
+    
+    /*------------------------POST---------------------------*/
     @PostMapping
-    public void addNewUser(@RequestBody User user) {
+    public ResponseEntity addNewUser(@RequestBody User user){
         service.addNewUser(user);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+//    @PostMapping
+//    public void addNewUser(@RequestBody User user) {
+//        service.addNewUser(user);
+//    }
 //    TODO
 //        Handle E11000 duplicate key error collection from MongoDB
 //          Error cause by Unique index on groupName in sayitrightdb > groups
