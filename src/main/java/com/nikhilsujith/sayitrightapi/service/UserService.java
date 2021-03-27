@@ -27,16 +27,14 @@ import static org.apache.http.entity.ContentType.*;
 @Service
 public class UserService {
 
-//    Get Repository
     @Autowired
     UserRepository userRepository;
-    //    Get S3 File Store
-    @Autowired
-    FileStore fileStore;
 
-//  Get repository
     @Autowired
     GroupRepository groupRepository;
+
+    @Autowired
+    FileStore fileStore;
 
     @Autowired
     S3Service s3Service;
