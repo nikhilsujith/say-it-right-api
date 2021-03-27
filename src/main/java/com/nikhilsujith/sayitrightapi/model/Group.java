@@ -37,7 +37,6 @@ public class Group {
 //        this.creatorName = creatorName;
 //    }
 }
-
 //TODO
 //    Create user
 //      Create group

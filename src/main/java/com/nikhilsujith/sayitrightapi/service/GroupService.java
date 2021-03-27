@@ -21,16 +21,15 @@ public class GroupService {
         return repository.findAll();
     }
 
-//    Get group by creator Name
-    public Optional<List<Group>> findGroupByCreatorName(String creatorName){
-        return repository.getGroupByCreatorName(creatorName);
-    }
+//  Get group by creator Name
+  public Optional<List<Group>> findGroupByCreatorId(String creatorId){
+      return repository.getGroupByCreatorId(creatorId);
+  }
 
-//    Get group by creator Id
-    public Optional<List<Group>> findGroupByCreatorId(String creatorId){
-        return repository.getGroupByCreatorName(creatorId);
-    }
-
+//  Get group by creator Id
+//  public Optional<List<Group>> findGroupByCreatorId(String creatorId){
+//      return repository.getGroupByCreatorName(creatorId);
+//  }
 
     /*--------------------------------POST--------------------------------*/
 //    Insert new group

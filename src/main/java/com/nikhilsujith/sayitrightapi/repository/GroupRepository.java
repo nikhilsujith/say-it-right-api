@@ -11,10 +11,11 @@ import java.util.Optional;
 
 @Repository
 public interface GroupRepository extends MongoRepository<Group, ObjectId> {
-
     //    Get group by creator name
-    @Query(value="{'creatorName':?0}")
-    Optional<List<Group>> getGroupByCreatorName(String creatorName);
+    @Query(value="{'creatorId':?0}")
+    Optional<List<Group>> getGroupByCreatorId(String groupName);
+
+
 //
 //    //    Get group by creator name
 //    @Query(value="{'creatorId': ?0}")

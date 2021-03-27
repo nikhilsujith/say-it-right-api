@@ -29,16 +29,17 @@ public class GroupController {
         return service.getAllGroups();
     }
 
-    @GetMapping("/name")
-    public Optional<List<Group>> getGroupByCreatorName(@RequestParam(name = "creator") String creatorName){
-        return service.findGroupByCreatorName(creatorName);
+    @GetMapping("/owner")
+    public Optional<List<Group>> getGroupByName(@RequestParam(name = "id") String groupName){
+        System.out.println("Inside controller");
+        return service.findGroupByCreatorId(groupName);
     }
 
-    @GetMapping("/id")
-    public Optional<List<Group>> getGroupByCreatorId(@RequestParam(name = "creator") String creatorId){
-        System.out.println("Creator ID Search");
-        return service.findGroupByCreatorName(creatorId);
-    }
+//    @GetMapping("/id")
+//    public Optional<List<Group>> getGroupByCreatorId(@RequestParam(name = "creator") String creatorId){
+//        System.out.println("Creator ID Search");
+//        return service.findGroupByCreatorName(creatorId);
+//    }
 
     /*--------------------------------POST--------------------------------*/
 //    FIXME
