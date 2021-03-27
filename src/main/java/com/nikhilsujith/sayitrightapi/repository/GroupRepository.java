@@ -17,9 +17,4 @@ public interface GroupRepository extends MongoRepository<Group, ObjectId> {
     @Query(value="{'creatorId':?0}")
     Optional<List<Group>> getGroupByCreatorId(String groupName);
 
-
-//
-//    //    Get group by creator name
-//    @Query(value="{'creatorId': ?0}")
-//    Optional<List<Group>> getGroupByCreatorId(String creatorId);
 }

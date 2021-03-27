@@ -48,7 +48,7 @@ public class UserController {
     /*------------------------Image---------------------------*/
 
     @PostMapping(
-            path = "{id}/image/upload",
+            path = "image/upload/{id}",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -57,14 +57,5 @@ public class UserController {
     ) {
         return service.uploadImage(id, file);
     }
-
-//    @GetMapping("{id}/image/download")
-//    public byte[] downloadUserProfileImage(@PathVariable("id") String id){
-//        return service.downloadUserProfileImage(id);
-//    }
-
-
-    /*------------------------Test Area---------------------------*/
-
 
 }
