@@ -69,7 +69,6 @@ public class UserService {
 
 //    update database with image link
     public String updateDatabaseImageLink(String link){
-
         return "updated";
     }
 

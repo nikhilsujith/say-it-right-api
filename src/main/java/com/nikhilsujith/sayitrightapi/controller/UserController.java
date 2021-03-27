@@ -2,6 +2,7 @@ package com.nikhilsujith.sayitrightapi.controller;
 
 import com.nikhilsujith.sayitrightapi.model.Group;
 import com.nikhilsujith.sayitrightapi.model.User;
+import com.nikhilsujith.sayitrightapi.repository.UserRepository;
 import com.nikhilsujith.sayitrightapi.service.UserService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class UserController {
     //    Get Service
     @Autowired
     UserService service;
+
+    @Autowired
+    UserRepository repository;
 
     //    Get all user data
     @GetMapping("/all")
