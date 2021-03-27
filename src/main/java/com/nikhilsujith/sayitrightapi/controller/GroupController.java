@@ -11,13 +11,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("api/v1/group")
 public class GroupController {
 
 //    Get Service
     @Autowired
-    GroupService service;
+    GroupService grp_service;
     
 //  Get Service
   @Autowired
@@ -26,13 +28,13 @@ public class GroupController {
 //    Get all groups
     @GetMapping("/all")
     public List<Group> getAllGroups(){
-        return service.getAllGroups();
+        return grp_service.getAllGroups();
     }
 
     @GetMapping("/owner")
     public Optional<List<Group>> getGroupByName(@RequestParam(name = "id") String groupName){
         System.out.println("Inside controller");
-        return service.findGroupByCreatorId(groupName);
+        return grp_service.findGroupByCreatorId(groupName);
     }
 
 //    @GetMapping("/id")
@@ -47,8 +49,17 @@ public class GroupController {
 
     @PostMapping()
     public String createNewGroup(@RequestBody Group group){
-        String obj_id=service.createNewGroup(group);
+        String obj_id=grp_service.createNewGroup(group);
         int r=user_service.insertUserCreatedGroup(group);
-        return String.valueOf(r);
+        //return String.valueOf(r);
+        return String.valueOf(obj_id);
+    }
+    
+    @PostMapping("/enrollNewGroup")
+    public String enrollNewGroup(HttpServletRequest request){
+    	String pool_id=request.getHeader("grpId");
+    	String user_id=request.getHeader("userId");
+    	String res=grp_service.enrollNewGroup(pool_id, user_id);
+    	return res;
     }
 }

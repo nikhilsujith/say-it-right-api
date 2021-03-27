@@ -54,6 +54,18 @@ public class UserService {
     public Optional<User> getUserById(ObjectId userId) {
         return userRepository.findById(userId);
     }
+    
+	//  Get user by PoolId
+	  public User getUserByPoolId(String pool_id) {
+	      return userRepository.findByPoolId(pool_id);
+	  }
+    
+	//  Get userid by PoolId
+		  public String getUserIdByPoolId(String pool_id) {
+		      User u= userRepository.findByPoolId(pool_id);
+		      return u.id;
+		  }
+    
 
     /*--------------------------POST--------------------------------------------*/
     public void addNewUser(User user) {
@@ -76,6 +88,7 @@ public class UserService {
     	new_ug.id=g.id;
     	new_ug.groupName=g.groupName;
     	new_ug.groupImage=g.groupImage;
+    	new_ug.groupDesc=g.groupDesc;
     	uu.myGroups.add(new_ug);
     	userRepository.save(uu);
     	for(UserGroup x:uu.myGroups) {

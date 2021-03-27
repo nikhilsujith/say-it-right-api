@@ -39,6 +39,18 @@ public class UserController {
     public Optional<User> getUserById(@PathVariable ObjectId userId) {
         return service.getUserById(userId);
     }
+    
+	//  Get user by Pool ID
+	  @GetMapping("getUserByPoolId/{pool_id}")
+	  public User getUserById(@PathVariable String pool_id) {
+	      return service.getUserByPoolId(pool_id);
+	  }
+	  
+	//  Get userid by Pool ID
+	  @GetMapping("getUserIdByPoolId/{pool_id}")
+	  public String getUserIdById(@PathVariable String pool_id) {
+	      return service.getUserIdByPoolId(pool_id);
+	  }
 
     /*------------------------POST---------------------------*/
     @PostMapping

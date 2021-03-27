@@ -21,10 +21,10 @@ import org.springframework.data.annotation.TypeAlias;
 @Getter
 @Setter
 @TypeAlias("UserGroup")
-public class UserGroup {
+public class GroupMember {
 
     public String id;
-    public String groupName;
-    public String groupDesc;
-    public String groupImage;
+    public String poolId;
+    public String fullName;
+    public String profileImage;
 }
