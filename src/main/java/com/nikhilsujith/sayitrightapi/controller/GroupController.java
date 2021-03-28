@@ -38,7 +38,7 @@ public class GroupController {
     }
     
     @GetMapping("/getUsers")
-    public List<GroupMember> UsersByGroupId(@RequestParam(name = "id") String groupId){
+    public List<GroupMember> getUsersByGroupId(@RequestParam(name = "id") String groupId){
         System.out.println("Inside controller");
         return groupService.findUsersByGroupId(groupId);
     }
