@@ -1,6 +1,7 @@
 package com.nikhilsujith.sayitrightapi.controller;
 
 import com.nikhilsujith.sayitrightapi.model.Group;
+import com.nikhilsujith.sayitrightapi.model.GroupMember;
 import com.nikhilsujith.sayitrightapi.service.GroupService;
 import com.nikhilsujith.sayitrightapi.service.UserService;
 import org.bson.types.Binary;
@@ -34,6 +35,12 @@ public class GroupController {
     public Optional<List<Group>> getGroupByName(@RequestParam(name = "id") String groupName){
         System.out.println("Inside controller");
         return groupService.findGroupByCreatorId(groupName);
+    }
+    
+    @GetMapping("/getUsers")
+    public List<GroupMember> UsersByGroupId(@RequestParam(name = "id") String groupId){
+        System.out.println("Inside controller");
+        return groupService.findUsersByGroupId(groupId);
     }
 
 //    @GetMapping("/id")

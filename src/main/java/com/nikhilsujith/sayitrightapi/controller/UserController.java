@@ -2,6 +2,7 @@ package com.nikhilsujith.sayitrightapi.controller;
 
 import com.nikhilsujith.sayitrightapi.model.Group;
 import com.nikhilsujith.sayitrightapi.model.User;
+import com.nikhilsujith.sayitrightapi.model.UserGroup;
 import com.nikhilsujith.sayitrightapi.repository.UserRepository;
 import com.nikhilsujith.sayitrightapi.service.UserService;
 import org.bson.types.ObjectId;
@@ -42,6 +43,18 @@ public class UserController {
         return service.getUserById(userId);
     }
     
+	//  Get enrolledGroupsList by Pool ID
+	  @GetMapping("/getEnrolledGroupsByPoolId")
+	  public List<UserGroup> getEnrolledGroupsByPoolId(@RequestParam(name = "id") String poolId) {
+	      return service.findEnrolledGroupsByPoolId(poolId);
+	  }
+	  
+	//Get user by User ID
+	@GetMapping("/getCreatedGroupsByPoolId")
+	public List<UserGroup> getCreatedGroupsByPoolId(@RequestParam(name = "id") String poolId) {
+	    return service.findCreatedGroupsByPoolId(poolId);
+	}
+	    
     //----------------Deep's getUserByPoolId------------------------
     
 ////  Get user by Pool ID
