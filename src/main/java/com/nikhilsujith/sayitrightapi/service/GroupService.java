@@ -39,6 +39,12 @@ public class GroupService {
         return groupRepository.getGroupByCreatorId(creatorId);
     }
 
+	//  Get users by group id
+	  public List<GroupMember> findUsersByGroupId(String groupId){
+            Optional<Group> g=groupRepository.findById(new ObjectId(groupId));
+            return g.get().users;
+	  }
+    
 //    Get group by creator Id
 //    public Optional<List<Group>> findGroupByCreatorId(String creatorId){
 //        return repository.getGroupByCreatorName(creatorId);

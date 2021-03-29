@@ -3,6 +3,7 @@ package com.nikhilsujith.sayitrightapi.service;
 import com.nikhilsujith.sayitrightapi.bucket.BucketName;
 import com.nikhilsujith.sayitrightapi.fileStore.FileStore;
 import com.nikhilsujith.sayitrightapi.model.Group;
+import com.nikhilsujith.sayitrightapi.model.GroupMember;
 import com.nikhilsujith.sayitrightapi.model.User;
 import com.nikhilsujith.sayitrightapi.model.UserGroup;
 import com.nikhilsujith.sayitrightapi.repository.GroupRepository;
@@ -49,6 +50,20 @@ public class UserService {
     public Optional<User> getUserById(ObjectId userId) {
         return userRepository.findById(userId);
     }
+    
+	//  Get getEnrolledGroupList by pool_id
+	  public List<UserGroup> findEnrolledGroupsByPoolId(String poolId){
+          ObjectId user_id=getUserIdFromPoolId(poolId);
+          Optional<User> u=userRepository.findById(user_id);
+          return u.get().enrolledGroups;
+	  }
+	  
+	//  Get getCreatedGroupList by pool_id
+		  public List<UserGroup> findCreatedGroupsByPoolId(String poolId){
+	          ObjectId user_id=getUserIdFromPoolId(poolId);
+	          Optional<User> u=userRepository.findById(user_id);
+	          return u.get().myGroups;
+		  }
 
     /*--------------------------POST--------------------------------------------*/
     public void addNewUser(User user) {
