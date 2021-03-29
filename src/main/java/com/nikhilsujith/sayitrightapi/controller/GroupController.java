@@ -38,8 +38,8 @@ public class GroupController {
         return groupService.findGroupByCreatorId(groupName);
     }
     
-    @GetMapping("/getUsers")
-    public List<GroupMember> getUsersByGroupId(@RequestParam(name = "id") String groupId){
+    @GetMapping("/users")
+    public List<GroupMember> getUsersByGroupId(@RequestParam(name = "groupId") String groupId){
         System.out.println("Inside controller");
         return groupService.findUsersByGroupId(groupId);
     }
