@@ -5,6 +5,7 @@ import com.nikhilsujith.sayitrightapi.model.GroupMember;
 import com.nikhilsujith.sayitrightapi.service.GroupService;
 import com.nikhilsujith.sayitrightapi.service.UserService;
 import org.bson.types.Binary;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -66,11 +67,9 @@ public class GroupController {
         return String.valueOf(obj_id);
     }
     
-    @PostMapping("/enrollNewGroup")
-    public String enrollNewGroup(HttpServletRequest request){
-    	String grp_id=request.getHeader("grpId");
-    	String pool_id=request.getHeader("poolId");
-    	String res=groupService.enrollNewGroup(grp_id, pool_id);
-    	return res;
+    @PostMapping("/enroll")
+    public String enrollNewGroup(@RequestParam("group") String groupId,
+                                 @RequestParam("pool") String poolId){
+        return groupService.enrollNewGroup(groupId, poolId);
     }
 }
