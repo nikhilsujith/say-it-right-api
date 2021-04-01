@@ -8,9 +8,13 @@ import com.nikhilsujith.sayitrightapi.repository.UserRepository;
 import org.bson.types.ObjectId;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+import org.springframework.util.unit.DataSize;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.MultipartConfigElement;
 import java.io.IOException;
 import java.util.*;
 
@@ -90,6 +94,14 @@ public class S3Service {
         if (file.isEmpty()) {
             throw new IllegalStateException("Cannot upload empty file [" + file.getSize() + "]");
         }
+    }
+
+    @Bean
+    public MultipartConfigElement multipartConfigElement() {
+        MultipartConfigFactory factory = new MultipartConfigFactory();
+        factory.setMaxFileSize(DataSize.ofBytes(100000000L));
+        factory.setMaxRequestSize(DataSize.ofBytes(100000000L));
+        return factory.createMultipartConfig();
     }
 
 }
