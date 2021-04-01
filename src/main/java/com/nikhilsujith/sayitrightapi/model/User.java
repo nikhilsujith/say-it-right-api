@@ -26,9 +26,10 @@ public class User {
     public String id;
     public String poolId;
     public String fullName;
+    public String desc;
+    private String nameMeaning;
     public String profileImage; // S3 key
     public String email;
-    public String desc;
     public String audioFile;
     public String videoFile;
     public List<UserGroup> myGroups;
@@ -39,18 +40,7 @@ public class User {
 //    TODO
 //      https://stackoverflow.com/questions/26591307/how-to-save-an-object-with-null-dbref-in-mongodb-java-spring?rq=1
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(poolId, user.poolId) && Objects.equals(fullName, user.fullName) && Objects.equals(profileImage, user.profileImage) && Objects.equals(email, user.email) && Objects.equals(desc, user.desc) && Objects.equals(audioFile, user.audioFile) && Objects.equals(videoFile, user.videoFile) && Objects.equals(createdOn, user.createdOn);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, poolId, fullName, profileImage, email, desc, audioFile, videoFile, createdOn);
-    }
 }
 
 
