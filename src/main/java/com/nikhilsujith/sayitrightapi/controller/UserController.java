@@ -38,9 +38,9 @@ public class UserController {
     }
 
     //    Get user by User ID
-    @GetMapping("/{userId}")
-    public Optional<User> getUserById(@PathVariable ObjectId userId) {
-        return service.getUserById(userId);
+    @GetMapping("/{poolId}")
+    public Optional<User> getUserById(@PathVariable String poolId) {
+        return service.getUserById(poolId);
     }
     
 	//  Get enrolledGroupsList by Pool ID

@@ -47,8 +47,12 @@ public class UserService {
     }
 
     //    Get user by UserId
-    public Optional<User> getUserById(ObjectId userId) {
-        return userRepository.findById(userId);
+    public Optional<User> getUserById(String poolId) {
+        ObjectId userId = getUserIdFromPoolId(poolId);
+        Optional<User> user = userRepository.findById(userId);
+        User uId = user.get();
+        String fetchedUserId = uId.getId();
+        return userRepository.findById(new ObjectId(fetchedUserId));
     }
     
 	//  Get getEnrolledGroupList by pool_id
