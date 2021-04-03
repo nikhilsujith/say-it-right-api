@@ -63,7 +63,7 @@ public class S3Service {
         Map<String, String> metadata = extractMetada(file);
 
         String path = String.format("%s/%s", BucketName.PROFILE_IMAGE.getBucketName(), id);
-        String fileName = String.format("%s-%s", file.getName(), UUID.randomUUID());
+        String fileName = String.format("%s-%s", file.getOriginalFilename(), UUID.randomUUID());
         String url = "https://say-it-right-bucket.s3.amazonaws.com" + "/" + path + "/" + fileName;
 
         try {

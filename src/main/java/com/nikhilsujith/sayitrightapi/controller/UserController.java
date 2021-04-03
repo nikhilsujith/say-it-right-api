@@ -44,13 +44,13 @@ public class UserController {
     }
     
 	//  Get enrolledGroupsList by Pool ID
-	  @GetMapping("/getEnrolledGroupsByPoolId")
+	  @GetMapping("/enrolled")
 	  public List<UserGroup> getEnrolledGroupsByPoolId(@RequestParam(name = "id") String poolId) {
 	      return service.findEnrolledGroupsByPoolId(poolId);
 	  }
 	  
 	//Get user by User ID
-	@GetMapping("/getCreatedGroupsByPoolId")
+	@GetMapping("/created")
 	public List<UserGroup> getCreatedGroupsByPoolId(@RequestParam(name = "id") String poolId) {
 	    return service.findCreatedGroupsByPoolId(poolId);
 	}
