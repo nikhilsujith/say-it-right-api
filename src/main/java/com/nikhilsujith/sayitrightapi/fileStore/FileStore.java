@@ -67,6 +67,7 @@ public class FileStore {
             putObjectRequest.setAccessControlList(acl);
             putObjectRequest.setMetadata(metadata);
             s3.putObject(putObjectRequest);
+            fileObject.delete();
             return "success";
         }
         catch (AmazonServiceException e){
