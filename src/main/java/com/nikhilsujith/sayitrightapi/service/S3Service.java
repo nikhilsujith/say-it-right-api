@@ -1,5 +1,6 @@
 package com.nikhilsujith.sayitrightapi.service;
 
+import com.amazonaws.services.s3.AmazonS3;
 import com.nikhilsujith.sayitrightapi.bucket.BucketName;
 import com.nikhilsujith.sayitrightapi.fileStore.FileStore;
 import com.nikhilsujith.sayitrightapi.model.User;
@@ -15,6 +16,8 @@ import org.springframework.util.unit.DataSize;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.MultipartConfigElement;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 
@@ -38,6 +41,13 @@ public class S3Service {
     @Autowired
     FileStore fileStore;
 
+    private final AmazonS3 s3;
+
+    @Autowired
+    public S3Service (AmazonS3 s3){
+        this.s3 = s3;
+    }
+
     public String uploadImage(String poolId, MultipartFile file) {
         String response;
         isFileEmpty(file);
@@ -46,8 +56,6 @@ public class S3Service {
         updateImageLink(poolId, response);
         return response;
     }
-
-
 
     private void updateImageLink(String poolId, String response) {
         ObjectId oId = userService.getUserIdFromPoolId(poolId);
@@ -59,21 +67,50 @@ public class S3Service {
 
     @NotNull
     private String uploadToS3(String id, MultipartFile file) {
-        String response;
+//        File fileObject = convertMultipartToFile(file);
+//        String fileName = System.currentTimeMillis()+"_"+file.getOriginalFilename();
+//        s3.putObject("say-it-right-bucket", fileName, fileObject);
+//        fileObject.delete();
+//        return "File Uploaded";
+
         Map<String, String> metadata = extractMetada(file);
 
-        String path = String.format("%s/%s", BucketName.PROFILE_IMAGE.getBucketName(), id);
+//        Path = Bucket Name + user Id
+//        String path = String.format("%s/%s", BucketName.PROFILE_IMAGE.getBucketName(), id);
+
+        String path = String.format("%s", id);
         String fileName = String.format("%s-%s", file.getOriginalFilename(), UUID.randomUUID());
         String url = "https://say-it-right-bucket.s3.amazonaws.com" + "/" + path + "/" + fileName;
 
-        try {
-            fileStore.saveImage(path, fileName, Optional.of(metadata), file.getInputStream());
-            response = url;
-        } catch (IOException e) {
-            response = "Image upload failed";
-            throw new IllegalStateException(e);
+        String response = fileStore.saveImage(path, fileName, Optional.of(metadata), file);
+        if (response.equals("success")){
+            return url;
         }
-        return response;
+        else{
+            return "Image upload failed";
+        }
+
+//        try {
+//            fileStore.saveImage(path, fileName, Optional.of(metadata), file.getInputStream());
+//            fileStore.saveImage(path, fileName, file);
+//
+//            response = url;
+//        } catch (IOException e) {
+//            response = "Image upload failed";
+//            throw new IllegalStateException(e);
+//        }
+    }
+
+    //    Convert Multipart file to File
+    private File convertMultipartToFile(MultipartFile file){
+        File convertedFile = new File(Objects.requireNonNull(file.getOriginalFilename()));
+        try(FileOutputStream fileOutputStream = new FileOutputStream(convertedFile)){
+            fileOutputStream.write(file.getBytes());
+        }
+        catch (IOException e){
+            System.out.println("Error converting multipart file to file"+e);
+        }
+        return convertedFile;
     }
 
     @NotNull

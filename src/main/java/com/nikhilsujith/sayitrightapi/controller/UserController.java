@@ -98,5 +98,10 @@ public class UserController {
     ) {
         return service.uploadImage(poolId, file);
     }
+//
+//    @GetMapping("image/download/{id}")
+//    public byte[] downloadUserProfileImage(@PathVariable("id") String poolId) {
+//        return service.downloadImage(poolId);
+//    }
 
 }
