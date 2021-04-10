@@ -48,10 +48,19 @@ public class S3Service {
         this.s3 = s3;
     }
 
-    public String uploadImage(String poolId, MultipartFile file) {
+    public String uploadImage(String poolId, MultipartFile file){
         String response;
         isFileEmpty(file);
         isImage(file);
+        response = uploadToS3(poolId, file);
+        updateImageLink(poolId, response);
+        return response;
+    }
+
+    public String uploadFile(String poolId, MultipartFile file) {
+        String response;
+        isFileEmpty(file);
+//        isImage(file);
         response = uploadToS3(poolId, file);
         updateImageLink(poolId, response);
         return response;
@@ -122,7 +131,7 @@ public class S3Service {
     }
 
     private void isImage(MultipartFile file) {
-        if (!Arrays.asList(IMAGE_JPEG.getMimeType(), IMAGE_PNG.getMimeType(), IMAGE_GIF.getMimeType()).contains(file.getContentType())) {
+        if (!Arrays.asList( IMAGE_JPEG.getMimeType(), IMAGE_PNG.getMimeType(), IMAGE_GIF.getMimeType()).contains(file.getContentType())) {
             throw new IllegalStateException("File must be of type jpeg, png or gif");
         }
     }

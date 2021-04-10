@@ -42,21 +42,21 @@ public class UserController {
     public Optional<User> getUserById(@PathVariable String poolId) {
         return service.getUserById(poolId);
     }
-    
-	//  Get enrolledGroupsList by Pool ID
-	  @GetMapping("/enrolled")
-	  public List<UserGroup> getEnrolledGroupsByPoolId(@RequestParam(name = "id") String poolId) {
-	      return service.findEnrolledGroupsByPoolId(poolId);
-	  }
-	  
-	//Get user by User ID
-	@GetMapping("/created")
-	public List<UserGroup> getCreatedGroupsByPoolId(@RequestParam(name = "id") String poolId) {
-	    return service.findCreatedGroupsByPoolId(poolId);
-	}
-	    
+
+    //  Get enrolledGroupsList by Pool ID
+    @GetMapping("/enrolled")
+    public List<UserGroup> getEnrolledGroupsByPoolId(@RequestParam(name = "id") String poolId) {
+        return service.findEnrolledGroupsByPoolId(poolId);
+    }
+
+    //Get user by User ID
+    @GetMapping("/created")
+    public List<UserGroup> getCreatedGroupsByPoolId(@RequestParam(name = "id") String poolId) {
+        return service.findCreatedGroupsByPoolId(poolId);
+    }
+
     //----------------Deep's getUserByPoolId------------------------
-    
+
 ////  Get user by Pool ID
 //	  @GetMapping("getUserByPoolId/{pool_id}")
 //	  public User getUserById(@PathVariable String pool_id) {
@@ -70,10 +70,10 @@ public class UserController {
 //	  }
 
     //----------------------------------------------------------------
-    
+
     /*------------------------POST---------------------------*/
     @PostMapping
-    public ResponseEntity addNewUser(@RequestBody User user){
+    public ResponseEntity addNewUser(@RequestBody User user) {
         service.addNewUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -86,7 +86,7 @@ public class UserController {
 //        Handle E11000 duplicate key error collection from MongoDB
 //          Error cause by Unique index on groupName in sayitrightdb > groups
 
-    /*------------------------Image---------------------------*/
+//    /*------------------------Image---------------------------*/
 
     @PostMapping(
             path = "image/upload/{id}",
@@ -98,10 +98,18 @@ public class UserController {
     ) {
         return service.uploadImage(poolId, file);
     }
-//
-//    @GetMapping("image/download/{id}")
-//    public byte[] downloadUserProfileImage(@PathVariable("id") String poolId) {
-//        return service.downloadImage(poolId);
-//    }
+
+    //    /*------------------------File---------------------------*/
+    @PostMapping(
+            path = "file/upload/{id}",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public String uploadFile(@PathVariable("id") String id,
+                                         @RequestParam("file") MultipartFile file
+    ) {
+        return service.uploadFile(id, file);
+    }
+
 
 }

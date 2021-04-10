@@ -104,6 +104,11 @@ public class UserService {
         return s3Service.uploadImage(poolId, file);
     }
 
+    /*------------------------File---------------------------*/
+    public String uploadFile(String id, MultipartFile file) {
+        return s3Service.uploadFile(id, file);
+    }
+
     /* User id from pool id */
     @NotNull ObjectId getUserIdFromPoolId(String id) {
         Optional<User> fetchedUser = userRepository.getGroupByCreatorId(id);
@@ -112,6 +117,5 @@ public class UserService {
 //        TODO
 //           Handle empty case
     }
-
 
 }
