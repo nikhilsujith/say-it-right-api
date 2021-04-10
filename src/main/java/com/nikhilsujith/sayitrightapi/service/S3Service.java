@@ -88,10 +88,12 @@ public class S3Service {
 //        String path = String.format("%s/%s", BucketName.PROFILE_IMAGE.getBucketName(), id);
 
         String path = String.format("%s", id);
-        String fileName = String.format("%s-%s", file.getOriginalFilename(), UUID.randomUUID());
+        String fileName = String.format("%s-%s", UUID.randomUUID(), file.getOriginalFilename());
         String url = "https://say-it-right-bucket.s3.amazonaws.com" + "/" + path + "/" + fileName;
+        System.out.println(fileName);
 
         String response = fileStore.saveImage(path, fileName, Optional.of(metadata), file);
+//        String response = "oops";
         if (response.equals("success")){
             return url;
         }
