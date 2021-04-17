@@ -101,14 +101,14 @@ public class UserController {
 
     //    /*------------------------File---------------------------*/
     @PostMapping(
-            path = "file/upload/{id}",
+            path = "video/upload/{id}",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public String uploadFile(@PathVariable("id") String id,
+    public String uploadVideo(@PathVariable("id") String id,
                                          @RequestParam("file") MultipartFile file
     ) {
-        return service.uploadFile(id, file);
+        return service.uploadVideo(id, file);
     }
 
 

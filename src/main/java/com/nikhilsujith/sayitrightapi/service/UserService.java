@@ -105,8 +105,8 @@ public class UserService {
     }
 
     /*------------------------File---------------------------*/
-    public String uploadFile(String id, MultipartFile file) {
-        return s3Service.uploadFile(id, file);
+    public String uploadVideo(String id, MultipartFile file) {
+        return s3Service.uploadVideo(id, file);
     }
 
     /* User id from pool id */

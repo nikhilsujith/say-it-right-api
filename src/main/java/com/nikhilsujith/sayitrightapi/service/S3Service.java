@@ -57,13 +57,29 @@ public class S3Service {
         return response;
     }
 
-    public String uploadFile(String poolId, MultipartFile file) {
+    public String uploadVideo(String poolId, MultipartFile file){
         String response;
         isFileEmpty(file);
-//        isImage(file);
         response = uploadToS3(poolId, file);
-        updateImageLink(poolId, response);
+        updateUserVideoLink(poolId, response);
         return response;
+    }
+
+//    Image and video upload based on this method
+/*    public String uploadFile(String poolId, MultipartFile file) {
+        String response;
+        isFileEmpty(file);
+        response = uploadToS3(poolId, file);
+//        updateUserVideoLink(poolId, response);
+        return response;
+    }*/
+
+    private void updateUserVideoLink(String poolId, String response){
+        ObjectId oId = userService.getUserIdFromPoolId(poolId);
+        Optional<User> user = userRepository.findById(oId);
+        User updatedUser = user.get();
+        updatedUser.setVideoFile(response);
+        userRepository.save(updatedUser);
     }
 
     private void updateImageLink(String poolId, String response) {
