@@ -44,6 +44,12 @@ public class GroupController {
         return groupService.findUsersByGroupId(groupId);
     }
 
+//    Delete Group
+    @DeleteMapping("/delete/{id}")
+    public void deleteGroupById(@PathVariable String id){
+        groupService.deleteGroup(new ObjectId(id));
+    }
+
 //    @GetMapping("/id")
 //    public Optional<List<Group>> getGroupByCreatorId(@RequestParam(name = "creator") String creatorId){
 //        System.out.println("Creator ID Search");
