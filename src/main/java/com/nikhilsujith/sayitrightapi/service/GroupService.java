@@ -10,6 +10,7 @@ import org.bson.types.Binary;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +28,9 @@ public class GroupService {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    S3Service s3Service;
 
 
     //    Get all groups
@@ -100,5 +104,20 @@ public class GroupService {
 
     }
 
+    /*------------------------Image---------------------------*/
+    public String uploadImage(String groupId, MultipartFile file){
+        String ImageResponse =  s3Service.uploadImage(groupId, file);
+        updateGroupImageLink(groupId, ImageResponse);
+        return ImageResponse;
+    }
+
+//    Update group image link
+    public void updateGroupImageLink(String groupId, String link){
+        Optional<Group> group = groupRepository.findById(new ObjectId(groupId));
+        Group updateGroup = group.orElse(null);
+        assert updateGroup != null;
+        updateGroup.setGroupImage(link);
+        groupRepository.save(updateGroup);
+    }
 
 }

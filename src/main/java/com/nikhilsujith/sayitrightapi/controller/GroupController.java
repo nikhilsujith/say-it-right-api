@@ -3,11 +3,14 @@ package com.nikhilsujith.sayitrightapi.controller;
 import com.nikhilsujith.sayitrightapi.model.Group;
 import com.nikhilsujith.sayitrightapi.model.GroupMember;
 import com.nikhilsujith.sayitrightapi.service.GroupService;
+import com.nikhilsujith.sayitrightapi.service.S3Service;
 import com.nikhilsujith.sayitrightapi.service.UserService;
 import org.bson.types.Binary;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -78,4 +81,17 @@ public class GroupController {
                                  @RequestParam("pool") String poolId){
         return groupService.enrollNewGroup(groupId, poolId);
     }
+
+// Upload Image
+    @PostMapping(
+            path = "image/upload/{id}",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public String uploadUserProfileImage(@PathVariable("id") String groupId,
+                                         @RequestParam("file") MultipartFile file
+    ) {
+        return groupService.uploadImage(groupId, file);
+    }
+
 }

@@ -101,12 +101,16 @@ public class UserService {
 
     /*------------------------Image---------------------------*/
     public String uploadImage(String poolId, MultipartFile file){
-        return s3Service.uploadImage(poolId, file);
+        String ImageResponse =  s3Service.uploadImage(poolId, file);
+        updateImageLink(poolId, ImageResponse);
+        return ImageResponse;
     }
 
-    /*------------------------File---------------------------*/
-    public String uploadVideo(String id, MultipartFile file) {
-        return s3Service.uploadVideo(id, file);
+    /*------------------------Video---------------------------*/
+    public String uploadVideo(String poolId, MultipartFile file) {
+        String VideoResponse =  s3Service.uploadVideo(poolId, file);
+        updateUserVideoLink(poolId, VideoResponse);
+        return VideoResponse;
     }
 
     /* User id from pool id */
@@ -116,6 +120,22 @@ public class UserService {
         return new ObjectId(user.getId());
 //        TODO
 //           Handle empty case
+    }
+
+    private void updateUserVideoLink(String poolId, String response){
+        ObjectId oId = getUserIdFromPoolId(poolId);
+        Optional<User> user = userRepository.findById(oId);
+        User updatedUser = user.get();
+        updatedUser.setVideoFile(response);
+        userRepository.save(updatedUser);
+    }
+
+    private void updateImageLink(String poolId, String response) {
+        ObjectId oId = getUserIdFromPoolId(poolId);
+        Optional<User> user = userRepository.findById(oId);
+        User updatedUser = user.get();
+        updatedUser.setProfileImage(response);
+        userRepository.save(updatedUser);
     }
 
 }
