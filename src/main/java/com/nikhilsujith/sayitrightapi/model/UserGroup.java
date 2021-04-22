@@ -1,15 +1,5 @@
 package com.nikhilsujith.sayitrightapi.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.JsonNode;
-import lombok.*;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.UUID;
-
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,8 +12,7 @@ import org.springframework.data.annotation.TypeAlias;
 @Setter
 @TypeAlias("UserGroup")
 public class UserGroup {
-
-    public String id;
+	public String id;
     public String groupName;
     public String groupDesc;
     public String groupImage;

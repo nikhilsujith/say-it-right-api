@@ -10,7 +10,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.UUID;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -24,13 +23,15 @@ public class Group {
 
     @Id
     public String id;
+
     public String groupName;
     public String groupDesc;
     public String groupImage;
     public String creatorId; //Object Id of creator
     public String creatorName; // Name of creator
     public String createrPoolId;
-    public List<GroupMember> users; 
+    public List<GroupMember> users;
+//
 //    public Group(UUID _id, String groupName, String groupDesc, String groupImage, String creatorId, String creatorName) {
 //        this._id = UUID.randomUUID();
 //        this.groupName = groupName;
@@ -39,7 +40,10 @@ public class Group {
 //        this.creatorId = creatorId;
 //        this.creatorName = creatorName;
 //    }
+	
+	
 }
+
 //TODO
 //    Create user
 //      Create group
