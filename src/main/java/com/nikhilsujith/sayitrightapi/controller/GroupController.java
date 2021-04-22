@@ -94,4 +94,10 @@ public class GroupController {
         return groupService.uploadImage(groupId, file);
     }
 
+    @DeleteMapping("removeUser")
+    public String removeUser(@RequestParam("c_pool") String creatorPoolId,
+                             @RequestParam("group") String groupId,
+                             @RequestParam("pool") String userPoolId){
+        return groupService.removeGroupMember(creatorPoolId, groupId,userPoolId);
+    }
 }

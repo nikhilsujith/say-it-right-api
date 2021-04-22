@@ -120,4 +120,50 @@ public class GroupService {
         groupRepository.save(updateGroup);
     }
 
+    public String removeGroupMember(String creator_pool_id,String group_id,String pool_id){
+        //return "group_id:"+group_id+", user_id:"+user_id;
+
+        try{
+            Optional<Group> g=groupRepository.findById(new ObjectId(group_id));
+            ObjectId user_id=userService.getUserIdFromPoolId(pool_id);
+            Optional<User> u=userRepository.findById(user_id);
+            //String x="";
+            int flag1=0;
+            int flag2=0;
+            for (GroupMember value : g.get().users) {
+                //x=x+value.poolId+",";
+                if(pool_id.equals(value.poolId)){
+                    if(creator_pool_id.equals(g.get().createrPoolId)){
+                        g.get().users.remove(value);
+                        flag1=1;
+                        break;
+                    }
+                    else{
+                        return "Alert: user don't have access to delete the record!";
+                    }
+                }
+            }
+            for (UserGroup value : u.get().enrolledGroups) {
+                //x=x+value.poolId+",";
+                if(group_id.equals(value.id)){
+                    u.get().enrolledGroups.remove(value);
+                    flag2=1;
+                    break;
+                }
+            }
+
+            if(flag1==1 && flag2==1){
+                groupRepository.save(g.get());
+                userRepository.save(u.get());
+                return "success";
+            }
+            else{
+                return "Record not deleted!";
+            }
+        }
+        catch(Exception ex) {
+            return ex.toString();
+        }
+    }
+
 }
