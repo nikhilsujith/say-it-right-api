@@ -72,10 +72,21 @@ public class UserController {
     //----------------------------------------------------------------
 
     /*------------------------POST---------------------------*/
-    @PostMapping
+    @PostMapping("/addUser")
     public ResponseEntity addNewUser(@RequestBody User user) {
         service.addNewUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PostMapping("/updateUser")
+    public ResponseEntity updateUser(@RequestBody User user) {
+        String result=service.updateUser(user);
+        if(result=="success"){
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
 //    @PostMapping

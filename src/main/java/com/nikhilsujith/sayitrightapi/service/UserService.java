@@ -79,6 +79,20 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public String updateUser(User user) {
+        //Optional<User> u=userRepository.findById(new ObjectId(user.id));
+        try{
+            User u=new User();
+            u=user;
+            userRepository.save(u);
+            return "success";
+        }
+        catch(Exception ex) {
+            return ex.toString();
+        }
+
+    }
+
 //    update database with image link
     public String updateDatabaseImageLink(String link){
         return "updated";
