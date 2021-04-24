@@ -8,7 +8,9 @@ import com.nikhilsujith.sayitrightapi.service.UserService;
 import org.bson.types.Binary;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -74,6 +76,17 @@ public class GroupController {
         int r=userService.insertUserCreatedGroup(group);
         //return String.valueOf(r);
         return String.valueOf(obj_id);
+    }
+
+    @PostMapping("/updateGroup")
+    public ResponseEntity updateGroup(@RequestBody Group group){
+        String result=groupService.updateGroup(group);
+        if(result=="success"){
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
     
     @PostMapping("/enroll")

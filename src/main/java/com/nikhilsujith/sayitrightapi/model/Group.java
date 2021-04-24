@@ -31,6 +31,8 @@ public class Group {
     public String creatorName; // Name of creator
     public String createrPoolId;
     public List<GroupMember> users;
+    public String createdOn;
+    public String updatedOn;
 //
 //    public Group(UUID _id, String groupName, String groupDesc, String groupImage, String creatorId, String creatorName) {
 //        this._id = UUID.randomUUID();

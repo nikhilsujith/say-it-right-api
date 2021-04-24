@@ -71,6 +71,20 @@ public class GroupService {
         return g.id;
     }
 
+    public String updateGroup(Group group) {
+        try{
+            Optional<Group> g = groupRepository.findById(new ObjectId(group.id));
+            g.get().groupDesc=group.groupDesc;
+            g.get().groupImage=group.groupImage;
+            g.get().groupName=group.groupName;
+            groupRepository.save(g.get());
+            return "success";
+        }
+        catch(Exception ex) {
+            return ex.toString();
+        }
+    }
+
     public String enrollNewGroup(String group_id, String pool_id) {
         //return "group_id:"+group_id+", user_id:"+user_id;
 
