@@ -79,13 +79,13 @@ public class GroupController {
     }
 
     @PostMapping("/updateGroup")
-    public ResponseEntity updateGroup(@RequestBody Group group){
-        String result=groupService.updateGroup(group);
+    public ResponseEntity updateGroup(@RequestBody Group group,@RequestParam("poolId") String poolId){
+        String result=groupService.updateGroup(group,poolId);
         if(result=="success"){
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return ResponseEntity.status(HttpStatus.OK).body(result);
         }
         else{
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
         }
     }
     
@@ -97,14 +97,15 @@ public class GroupController {
 
 // Upload Image
     @PostMapping(
-            path = "image/upload/{id}",
+            path = "image/upload",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public String uploadUserProfileImage(@PathVariable("id") String groupId,
+    public String uploadUserProfileImage(@PathVariable("groupId") String groupId,
+                                         @PathVariable("poolId") String poolId,
                                          @RequestParam("file") MultipartFile file
     ) {
-        return groupService.uploadImage(groupId, file);
+        return groupService.uploadImage(groupId, file, poolId);
     }
 
     @DeleteMapping("removeUser")
@@ -112,5 +113,11 @@ public class GroupController {
                              @RequestParam("group") String groupId,
                              @RequestParam("pool") String userPoolId){
         return groupService.removeGroupMember(creatorPoolId, groupId,userPoolId);
+    }
+
+    @DeleteMapping("exitGroup")
+    public String exitGroup(@RequestParam("group") String groupId,
+                             @RequestParam("pool") String userPoolId){
+        return groupService.exitGroup(groupId,userPoolId);
     }
 }

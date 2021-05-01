@@ -84,7 +84,46 @@ public class UserService {
         try{
             User u=new User();
             u=user;
+
+            //update username in group if that was user's created group
+            for(int i=0;i<u.myGroups.size();i++){
+                String grpId=user.myGroups.get(i).id;
+                Optional<Group> group = groupRepository.findById(new ObjectId(grpId));
+                if(!u.fullName.equals(group.get().creatorName)){
+                    group.get().creatorName=u.fullName;
+                    groupRepository.save(group.get());
+                }
+            }
+
+            for(int i=0;i<u.enrolledGroups.size();i++){
+                String grpId=user.enrolledGroups.get(i).id;
+                Optional<Group> group = groupRepository.findById(new ObjectId(grpId));
+                for(int j=0;j<group.get().users.size();j++){
+                    String userid=group.get().users.get(j).id;
+                    if(userid.equals(u.id)){
+                        group.get().users.get(j).fullName=u.fullName;
+                        group.get().users.get(j).profileImage=u.profileImage;
+                    }
+                }
+                groupRepository.save(group.get());
+            }
+
             userRepository.save(u);
+
+//            for(UserGroup v1:u.enrolledGroups){
+//                Optional<Group> g=groupRepository.findById(new ObjectId(v1.id));
+//                List<GroupMember> gm=g.get().users;
+//                for(GroupMember v2:gm){
+//                    if(u.poolId.equals(v2.poolId)){
+//                        v2.fullName=u.fullName;
+//                        v2.profileImage=u.profileImage;
+//                        v2.id=u.id;
+//                        v2.poolId=u.id
+//                    }
+//                }
+//
+//            }
+
             return "success";
         }
         catch(Exception ex) {
@@ -120,6 +159,7 @@ public class UserService {
     public String uploadImage(String poolId, MultipartFile file){
         String ImageResponse =  s3Service.uploadImage(poolId, file);
         updateImageLink(poolId, ImageResponse);
+        updateImageLinkInGroup(poolId, ImageResponse);
         return ImageResponse;
     }
 
@@ -153,6 +193,22 @@ public class UserService {
         User updatedUser = user.get();
         updatedUser.setProfileImage(response);
         userRepository.save(updatedUser);
+    }
+
+    private void updateImageLinkInGroup(String poolId, String response) {
+        ObjectId oId = getUserIdFromPoolId(poolId);
+        Optional<User> u = userRepository.findById(oId);
+        for(int i=0;i<u.get().enrolledGroups.size();i++){
+            String grpId=u.get().enrolledGroups.get(i).id;
+            Optional<Group> group = groupRepository.findById(new ObjectId(grpId));
+            for(int j=0;j<group.get().users.size();j++){
+                String userid=group.get().users.get(j).id;
+                if(userid.equals(u.get().id)){
+                    group.get().users.get(j).profileImage=u.get().profileImage;
+                }
+            }
+            groupRepository.save(group.get());
+        }
     }
 
     public String removeGroup(String creator_pool_id,String group_id){

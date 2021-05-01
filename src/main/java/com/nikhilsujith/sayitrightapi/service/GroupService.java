@@ -71,14 +71,50 @@ public class GroupService {
         return g.id;
     }
 
-    public String updateGroup(Group group) {
+    public String updateGroup(Group group,String poolId) {
         try{
             Optional<Group> g = groupRepository.findById(new ObjectId(group.id));
-            g.get().groupDesc=group.groupDesc;
-            g.get().groupImage=group.groupImage;
-            g.get().groupName=group.groupName;
-            groupRepository.save(g.get());
-            return "success";
+            if(g.get().createrPoolId.equals(poolId)){
+                g.get().id=group.id;
+                g.get().groupDesc=group.groupDesc;
+                g.get().groupImage=group.groupImage;
+                g.get().groupName=group.groupName;
+                groupRepository.save(g.get());
+
+
+                for(int i=0;i<group.users.size();i++){
+                    String user_id=group.users.get(i).id;
+                    Optional<User> u=userRepository.findById(new ObjectId(user_id));
+
+                    //update group details inside enrolled groups list inside user
+                    for(int j=0;j<u.get().enrolledGroups.size();j++){
+                        String grpId=u.get().enrolledGroups.get(j).id;
+                        if(grpId.equals(g.get().id)){
+                            u.get().enrolledGroups.get(j).groupDesc=group.groupDesc;
+                            u.get().enrolledGroups.get(j).groupImage=group.groupImage;
+                            u.get().enrolledGroups.get(j).groupName=group.groupName;
+                            userRepository.save(u.get());
+                        }
+                    }
+
+                    //update group details inside owner's groups list inside user
+                    for(int j=0;j<u.get().myGroups.size();j++){
+                        String grpId=u.get().myGroups.get(j).id;
+                        if(grpId.equals(g.get().id)){
+                            u.get().myGroups.get(j).groupDesc=group.groupDesc;
+                            u.get().myGroups.get(j).groupImage=group.groupImage;
+                            u.get().myGroups.get(j).groupName=group.groupName;
+                            userRepository.save(u.get());
+                        }
+                    }
+
+                    //userRepository.save(u.get());
+                }
+                return "success";
+            }
+            else{
+                return "User don't have access to update the group";
+            }
         }
         catch(Exception ex) {
             return ex.toString();
@@ -92,26 +128,44 @@ public class GroupService {
             Optional<Group> g = groupRepository.findById(new ObjectId(group_id));
             ObjectId user_id = userService.getUserIdFromPoolId(pool_id);
             Optional<User> u = userRepository.findById(user_id);
+            int flag1=0;
+            int flag2=0;
+            for (UserGroup value : u.get().enrolledGroups) {
+                if(group_id.equals(value.id)){
+                    flag1=1;
+                }
+            }
+            for (GroupMember value : g.get().users) {
+                if(group_id.equals(value.id)){
+                    flag2=1;
+                }
+            }
 
-            UserGroup ug = new UserGroup();
-            ug.id = g.get().id;
-            ug.groupName = g.get().groupName;
-            ug.groupImage = g.get().groupImage;
-            ug.groupDesc = g.get().groupDesc;
-            u.get().enrolledGroups.add(ug);
+            if(flag1!=1 && flag2!=1){
+                UserGroup ug = new UserGroup();
+                ug.id = g.get().id;
+                ug.groupName = g.get().groupName;
+                ug.groupImage = g.get().groupImage;
+                ug.groupDesc = g.get().groupDesc;
+                u.get().enrolledGroups.add(ug);
 
 
-            GroupMember gm = new GroupMember();
-            gm.id = u.get().id;
-            gm.fullName = u.get().fullName;
-            gm.poolId = u.get().poolId;
-            gm.profileImage = u.get().profileImage;
-            g.get().users.add(gm);
+                GroupMember gm = new GroupMember();
+                gm.id = u.get().id;
+                gm.fullName = u.get().fullName;
+                gm.poolId = u.get().poolId;
+                gm.profileImage = u.get().profileImage;
+                g.get().users.add(gm);
 
-            userRepository.save(u.get());
-            groupRepository.save(g.get());
+                userRepository.save(u.get());
+                groupRepository.save(g.get());
 
-            return "success";
+                return "success";
+            }
+            else{
+                return "User already a member of the group";
+            }
+
         } catch (Exception ex) {
             return ex.toString();
         }
@@ -119,19 +173,31 @@ public class GroupService {
     }
 
     /*------------------------Image---------------------------*/
-    public String uploadImage(String groupId, MultipartFile file){
+    public String uploadImage(String groupId, MultipartFile file,String poolId){
         String ImageResponse =  s3Service.uploadImage(groupId, file);
         updateGroupImageLink(groupId, ImageResponse);
+        updateGroupImageLinkInUser(groupId,poolId,ImageResponse);
         return ImageResponse;
     }
 
-//    Update group image link
+//    Update group image link in group
     public void updateGroupImageLink(String groupId, String link){
         Optional<Group> group = groupRepository.findById(new ObjectId(groupId));
         Group updateGroup = group.orElse(null);
         assert updateGroup != null;
         updateGroup.setGroupImage(link);
         groupRepository.save(updateGroup);
+    }
+
+    //    Update group image link in group
+    public void updateGroupImageLinkInUser(String groupId,String poolId, String link){
+        Optional<User> user = userRepository.findById(new ObjectId(poolId));
+        for(int i=0;i<user.get().myGroups.size();i++){
+            if(groupId.equals(user.get().myGroups.get(i).id)){
+                user.get().myGroups.get(i).groupImage=link;
+            }
+        }
+        userRepository.save(user.get());
     }
 
     public String removeGroupMember(String creator_pool_id,String group_id,String pool_id){
@@ -155,6 +221,47 @@ public class GroupService {
                     else{
                         return "Alert: user don't have access to delete the record!";
                     }
+                }
+            }
+            for (UserGroup value : u.get().enrolledGroups) {
+                //x=x+value.poolId+",";
+                if(group_id.equals(value.id)){
+                    u.get().enrolledGroups.remove(value);
+                    flag2=1;
+                    break;
+                }
+            }
+
+            if(flag1==1 && flag2==1){
+                groupRepository.save(g.get());
+                userRepository.save(u.get());
+                return "success";
+            }
+            else{
+                return "Record not deleted!";
+            }
+        }
+        catch(Exception ex) {
+            return ex.toString();
+        }
+    }
+
+    public String exitGroup(String group_id,String pool_id){
+        //return "group_id:"+group_id+", user_id:"+user_id;
+
+        try{
+            Optional<Group> g=groupRepository.findById(new ObjectId(group_id));
+            ObjectId user_id=userService.getUserIdFromPoolId(pool_id);
+            Optional<User> u=userRepository.findById(user_id);
+            //String x="";
+            int flag1=0;
+            int flag2=0;
+            for (GroupMember value : g.get().users) {
+                //x=x+value.poolId+",";
+                if(pool_id.equals(value.poolId)){
+                        g.get().users.remove(value);
+                        flag1=1;
+                        break;
                 }
             }
             for (UserGroup value : u.get().enrolledGroups) {
