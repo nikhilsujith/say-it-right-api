@@ -122,10 +122,4 @@ public class UserController {
         return service.uploadVideo(id, file);
     }
 
-    @DeleteMapping("removeGroup")
-    public String removeUser(@RequestParam("c_pool") String creatorPoolId,
-                             @RequestParam("group") String groupId){
-        return service.removeGroup(creatorPoolId, groupId);
-    }
-
 }

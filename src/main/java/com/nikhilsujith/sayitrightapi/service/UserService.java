@@ -210,49 +210,4 @@ public class UserService {
             groupRepository.save(group.get());
         }
     }
-
-    public String removeGroup(String creator_pool_id,String group_id){
-
-        try{
-            Optional<Group> g=groupRepository.findById(new ObjectId(group_id));
-            ObjectId user_id=getUserIdFromPoolId(creator_pool_id);
-            Optional<User> u=userRepository.findById(user_id);
-            //String x="";
-            int flag1=0;
-            int flag2=0;
-            for (UserGroup value : u.get().myGroups) {
-                //x=x+value.poolId+",";
-                if(group_id.equals(value.id)){
-                    u.get().myGroups.remove(value);
-                    flag1=1;
-                    break;
-                }
-            }
-            for (GroupMember value : g.get().users) {
-                //x=x+value.poolId+",";
-                String x=groupService.removeGroupMember(creator_pool_id,group_id,value.poolId);
-                if(!x.equals("success")){
-                    flag2=0;
-                    break;
-                }
-                else{
-                    flag2=1;
-                }
-            }
-
-            if(flag1==1 && flag2==1){
-                //groupRepository.save(g.get());
-                userRepository.save(u.get());
-                return "success";
-            }
-            else{
-                return "Record not deleted!";
-            }
-        }
-        catch(Exception ex) {
-            return ex.toString();
-        }
-    }
-
-
 }

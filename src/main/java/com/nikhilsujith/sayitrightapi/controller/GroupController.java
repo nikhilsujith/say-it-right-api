@@ -109,15 +109,40 @@ public class GroupController {
     }
 
     @DeleteMapping("removeUser")
-    public String removeUser(@RequestParam("c_pool") String creatorPoolId,
+    public ResponseEntity removeUser(@RequestParam("c_pool") String creatorPoolId,
                              @RequestParam("group") String groupId,
                              @RequestParam("pool") String userPoolId){
-        return groupService.removeGroupMember(creatorPoolId, groupId,userPoolId);
+        String res=groupService.removeGroupMember(creatorPoolId, groupId,userPoolId);
+        if (res == "success") {
+            return ResponseEntity.status(HttpStatus.OK).body(res);
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(res);
+        }
     }
 
     @DeleteMapping("exitGroup")
-    public String exitGroup(@RequestParam("group") String groupId,
+    public ResponseEntity exitGroup(@RequestParam("group") String groupId,
                              @RequestParam("pool") String userPoolId){
-        return groupService.exitGroup(groupId,userPoolId);
+        String res=groupService.exitGroup(groupId,userPoolId);
+        if (res == "success") {
+            return ResponseEntity.status(HttpStatus.OK).body(res);
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(res);
+        }
     }
+
+    @DeleteMapping("removeGroup")
+    public ResponseEntity removeGroup(@RequestParam("group") String groupId,
+                                    @RequestParam("pool") String userPoolId){
+        String res=groupService.removeGroup(groupId,userPoolId);
+        if (res == "success") {
+            return ResponseEntity.status(HttpStatus.OK).body(res);
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(res);
+        }
+    }
+
 }

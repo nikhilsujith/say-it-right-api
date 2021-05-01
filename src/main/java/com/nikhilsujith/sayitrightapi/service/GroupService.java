@@ -207,39 +207,45 @@ public class GroupService {
             Optional<Group> g=groupRepository.findById(new ObjectId(group_id));
             ObjectId user_id=userService.getUserIdFromPoolId(pool_id);
             Optional<User> u=userRepository.findById(user_id);
-            //String x="";
-            int flag1=0;
-            int flag2=0;
-            for (GroupMember value : g.get().users) {
-                //x=x+value.poolId+",";
-                if(pool_id.equals(value.poolId)){
-                    if(creator_pool_id.equals(g.get().createrPoolId)){
-                        g.get().users.remove(value);
-                        flag1=1;
+
+            if(creator_pool_id.equals(g.get().createrPoolId)){
+                int flag1=0;
+                int flag2=0;
+                for (GroupMember value : g.get().users) {
+                    //x=x+value.poolId+",";
+                    if(pool_id.equals(value.poolId)){
+                        if(creator_pool_id.equals(g.get().createrPoolId)){
+                            g.get().users.remove(value);
+                            flag1=1;
+                            break;
+                        }
+                        else{
+                            return "Alert: user don't have access to delete the record!";
+                        }
+                    }
+                }
+                for (UserGroup value : u.get().enrolledGroups) {
+                    //x=x+value.poolId+",";
+                    if(group_id.equals(value.id)){
+                        u.get().enrolledGroups.remove(value);
+                        flag2=1;
                         break;
                     }
-                    else{
-                        return "Alert: user don't have access to delete the record!";
-                    }
                 }
-            }
-            for (UserGroup value : u.get().enrolledGroups) {
-                //x=x+value.poolId+",";
-                if(group_id.equals(value.id)){
-                    u.get().enrolledGroups.remove(value);
-                    flag2=1;
-                    break;
-                }
-            }
 
-            if(flag1==1 && flag2==1){
-                groupRepository.save(g.get());
-                userRepository.save(u.get());
-                return "success";
+                if(flag1==1 && flag2==1){
+                    groupRepository.save(g.get());
+                    userRepository.save(u.get());
+                    return "success";
+                }
+                else{
+                    return "Record not deleted!";
+                }
             }
             else{
-                return "Record not deleted!";
+                return "User isn't allowed to remove in this the Group";
             }
+
         }
         catch(Exception ex) {
             return ex.toString();
@@ -281,6 +287,49 @@ public class GroupService {
             else{
                 return "Record not deleted!";
             }
+        }
+        catch(Exception ex) {
+            return ex.toString();
+        }
+    }
+
+    public String removeGroup(String group_id,String pool_id){
+        //return "group_id:"+group_id+", user_id:"+user_id;
+
+        try{
+            Optional<Group> g=groupRepository.findById(new ObjectId(group_id));
+            ObjectId user_id=userService.getUserIdFromPoolId(pool_id);
+            Optional<User> u=userRepository.findById(user_id);
+            if(u.get().poolId.equals(g.get().createrPoolId)){
+
+                //remove group details from user mygroup list
+                for(int i=0;i<u.get().myGroups.size();i++){
+                    if(group_id.equals(u.get().myGroups.get(i).id)){
+                        u.get().myGroups.remove(u.get().myGroups.get(i));
+                        userRepository.save(u.get());
+                    }
+                }
+
+                //remove group details for users who enrolled in that group
+                for(int i=0;i<g.get().users.size();i++){
+                    Optional<User> enrolled_usr=userRepository.findById(new ObjectId(g.get().users.get(i).id));
+                    for(int j=0;j<enrolled_usr.get().enrolledGroups.size();j++){
+                        if(enrolled_usr.get().enrolledGroups.get(j).id.equals(group_id)){
+                            enrolled_usr.get().enrolledGroups.remove(enrolled_usr.get().enrolledGroups.get(j));
+                            userRepository.save(enrolled_usr.get());
+                        }
+                    }
+                }
+
+                //remove group object
+                groupRepository.deleteById(new ObjectId(group_id));
+
+                return "success";
+            }
+            else{
+                return "User don't have access to delete group";
+            }
+
         }
         catch(Exception ex) {
             return ex.toString();
