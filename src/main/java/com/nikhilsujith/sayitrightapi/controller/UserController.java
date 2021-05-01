@@ -127,5 +127,6 @@ public class UserController {
                              @RequestParam("group") String groupId){
         return service.removeGroup(creatorPoolId, groupId);
     }
+    
 
 }

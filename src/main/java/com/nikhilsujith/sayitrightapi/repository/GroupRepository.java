@@ -17,7 +17,7 @@ public interface GroupRepository extends MongoRepository<Group, ObjectId> {
     @Query(value = "{'creatorId':?0}")
     Optional<List<Group>> getGroupByCreatorId(String groupName);
 
-//    //    Delete by id
-//    @Query(value="{'_id' : $0}", delete = true)
-//    public User deleteById(ObjectId _id);
+
+
+//
 }
