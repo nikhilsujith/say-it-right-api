@@ -104,12 +104,12 @@ public class S3Service {
         System.out.println(fileName);
 
         String response = fileStore.saveImage(path, fileName, Optional.of(metadata), file);
-//        String response = "oops";
+        System.out.println(response);
         if (response.equals("success")){
             return url;
         }
         else{
-            return "Image upload failed";
+            return "File upload failed";
         }
 
 //        try {
