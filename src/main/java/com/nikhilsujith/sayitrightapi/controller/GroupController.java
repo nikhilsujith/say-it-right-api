@@ -101,8 +101,8 @@ public class GroupController {
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public String uploadUserProfileImage(@PathVariable("groupId") String groupId,
-                                         @PathVariable("poolId") String poolId,
+    public String uploadUserProfileImage(@RequestParam("groupId") String groupId,
+                                         @RequestParam("poolId") String poolId,
                                          @RequestParam("file") MultipartFile file
     ) {
         return groupService.uploadImage(groupId, file, poolId);

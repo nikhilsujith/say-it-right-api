@@ -177,7 +177,7 @@ public class GroupService {
         String ImageResponse =  s3Service.uploadImage(groupId, file);
         updateGroupImageLink(groupId, ImageResponse);
         updateGroupImageLinkInUser(groupId,poolId,ImageResponse);
-        return ImageResponse;
+        return "ImageResponse";
     }
 
 //    Update group image link in group
