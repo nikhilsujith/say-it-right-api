@@ -177,7 +177,7 @@ public class GroupService {
         String ImageResponse =  s3Service.uploadImage(groupId, file);
         updateGroupImageLink(groupId, ImageResponse);
         updateGroupImageLinkInUser(groupId,poolId,ImageResponse);
-        return "ImageResponse";
+        return ImageResponse;
     }
 
 //    Update group image link in group
@@ -191,7 +191,8 @@ public class GroupService {
 
     //    Update group image link in group
     public void updateGroupImageLinkInUser(String groupId,String poolId, String link){
-        Optional<User> user = userRepository.findById(new ObjectId(poolId));
+        ObjectId user_id=userService.getUserIdFromPoolId(poolId);
+        Optional<User> user=userRepository.findById(user_id);
         for(int i=0;i<user.get().myGroups.size();i++){
             if(groupId.equals(user.get().myGroups.get(i).id)){
                 user.get().myGroups.get(i).groupImage=link;
