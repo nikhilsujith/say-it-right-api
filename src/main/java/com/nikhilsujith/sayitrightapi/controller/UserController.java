@@ -82,10 +82,10 @@ public class UserController {
     public ResponseEntity updateUser(@RequestBody User user) {
         String result=service.updateUser(user);
         if(result=="success"){
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return ResponseEntity.status(HttpStatus.OK).body(result);
         }
         else{
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
         }
     }
 
