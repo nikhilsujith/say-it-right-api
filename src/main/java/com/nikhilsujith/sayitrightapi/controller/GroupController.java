@@ -90,9 +90,15 @@ public class GroupController {
     }
     
     @PostMapping("/enroll")
-    public String enrollNewGroup(@RequestParam("group") String groupId,
+    public ResponseEntity enrollNewGroup(@RequestParam("group") String groupId,
                                  @RequestParam("pool") String poolId){
-        return groupService.enrollNewGroup(groupId, poolId);
+        String res=groupService.enrollNewGroup(groupId, poolId);
+        if (res == "success") {
+            return ResponseEntity.status(HttpStatus.OK).body(res);
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(res);
+        }
     }
 
 // Upload Image
