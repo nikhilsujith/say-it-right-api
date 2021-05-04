@@ -37,6 +37,12 @@ public class GroupController {
         return groupService.getAllGroups();
     }
 
+    @GetMapping("/{groupId}")
+    public Optional<Group> getGroupById(@PathVariable String groupId){
+        //System.out.println("Inside controller");
+        return groupService.getGroupById(groupId);
+    }
+
     @GetMapping("/owner")
     public Optional<List<Group>> getGroupByName(@RequestParam(name = "id") String groupName){
         System.out.println("Inside controller");

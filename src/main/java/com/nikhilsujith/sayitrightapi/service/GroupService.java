@@ -10,6 +10,8 @@ import org.bson.types.Binary;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -47,6 +49,13 @@ public class GroupService {
     public List<GroupMember> findUsersByGroupId(String groupId) {
         Optional<Group> g = groupRepository.findById(new ObjectId(groupId));
         return g.get().users;
+    }
+
+    //    Get user by User ID
+    @GetMapping("/{poolId}")
+    public Optional<Group> getGroupById(@PathVariable String groupId) {
+        //Optional<Group> g = groupRepository.findById(new ObjectId(groupId));
+        return groupRepository.findById(new ObjectId(groupId));
     }
 
     // Delete group
