@@ -88,14 +88,25 @@ public class GroupService {
                 g.get().groupDesc=group.groupDesc;
                 g.get().groupImage=group.groupImage;
                 g.get().groupName=group.groupName;
-                groupRepository.save(g.get());
 
 
-                for(int i=0;i<group.users.size();i++){
+                //update group details inside owner's groups list inside user
+                Optional<User> creator_u=userRepository.findById(new ObjectId(g.get().creatorId));
+                for(int j=0;j<creator_u.get().myGroups.size();j++){
+                    String grpId=creator_u.get().myGroups.get(j).id;
+                    if(grpId.equals(g.get().id)){
+                        creator_u.get().myGroups.get(j).groupDesc=group.groupDesc;
+                        creator_u.get().myGroups.get(j).groupImage=group.groupImage;
+                        creator_u.get().myGroups.get(j).groupName=group.groupName;
+                        userRepository.save(creator_u.get());
+                    }
+                }
+
+                //update group details inside enrolled groups list inside user
+                for(int i=0;i<g.get().users.size();i++){
                     String user_id=group.users.get(i).id;
                     Optional<User> u=userRepository.findById(new ObjectId(user_id));
 
-                    //update group details inside enrolled groups list inside user
                     for(int j=0;j<u.get().enrolledGroups.size();j++){
                         String grpId=u.get().enrolledGroups.get(j).id;
                         if(grpId.equals(g.get().id)){
@@ -106,19 +117,10 @@ public class GroupService {
                         }
                     }
 
-                    //update group details inside owner's groups list inside user
-                    for(int j=0;j<u.get().myGroups.size();j++){
-                        String grpId=u.get().myGroups.get(j).id;
-                        if(grpId.equals(g.get().id)){
-                            u.get().myGroups.get(j).groupDesc=group.groupDesc;
-                            u.get().myGroups.get(j).groupImage=group.groupImage;
-                            u.get().myGroups.get(j).groupName=group.groupName;
-                            userRepository.save(u.get());
-                        }
-                    }
-
                     //userRepository.save(u.get());
                 }
+
+                groupRepository.save(g.get());
                 return "success";
             }
             else{
