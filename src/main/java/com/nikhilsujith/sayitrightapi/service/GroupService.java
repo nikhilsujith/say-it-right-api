@@ -8,6 +8,7 @@ import com.nikhilsujith.sayitrightapi.repository.GroupRepository;
 import com.nikhilsujith.sayitrightapi.repository.UserRepository;
 import org.bson.types.Binary;
 import org.bson.types.ObjectId;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -88,6 +89,7 @@ public class GroupService {
                 g.get().groupDesc=group.groupDesc;
                 g.get().groupImage=group.groupImage;
                 g.get().groupName=group.groupName;
+                g.get().updatedOn= DateTime.now().toString();
 
 
                 //update group details inside owner's groups list inside user
@@ -104,9 +106,8 @@ public class GroupService {
 
                 //update group details inside enrolled groups list inside user
                 for(int i=0;i<g.get().users.size();i++){
-                    String user_id=group.users.get(i).id;
+                    String user_id=g.get().users.get(i).id;
                     Optional<User> u=userRepository.findById(new ObjectId(user_id));
-
                     for(int j=0;j<u.get().enrolledGroups.size();j++){
                         String grpId=u.get().enrolledGroups.get(j).id;
                         if(grpId.equals(g.get().id)){
@@ -116,7 +117,6 @@ public class GroupService {
                             userRepository.save(u.get());
                         }
                     }
-
                     //userRepository.save(u.get());
                 }
 
